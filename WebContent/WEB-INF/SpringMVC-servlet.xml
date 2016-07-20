@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<!-- 配置Controller所在位置 -->
+	<context:component-scan base-package="com.wood.controller"></context:component-scan>
+	
+	<!-- 开启MVC注解扫描 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 配置一个视图解析器 -->
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	 <!-- 资源映射,这些资源不进行视图解析 -->
+	 <mvc:default-servlet-handler/> 
+	<!-- <mvc:resources mapping="/javascript/**" location="/js" />
+	<mvc:resources mapping="/styles/**" location="/css" />
+	<mvc:resources mapping="/images/**" location="/images" />
+	<mvc:default-servlet-handler /> -->
+	
+	
+</beans>

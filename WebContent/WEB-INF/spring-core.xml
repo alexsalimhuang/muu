@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- 配置属性文件的读取 -->
+	<bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties"></property>
+	</bean>
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 数据库的用户名 -->
+		<property name="user" value="${username}"></property>
+		<!-- 数据库的密码 -->
+		<property name="password" value="${userpass}"></property>
+		<!-- 数据库的驱动类 -->
+		<property name="driverClass" value="${driverClass}"></property>
+		<!-- 数据库的链接字符串 -->
+		<property name="jdbcUrl" value="${url}"></property>
+
+		<!-- 连接池需要配置的内容 -->
+		<!-- 初始化连接的个数 -->
+		<property name="initialPoolSize" value="10"></property>
+		<!-- 最大连接个数 -->
+		<property name="maxPoolSize" value="50"></property>
+		<!-- 最小连接个数 -->
+		<property name="minPoolSize" value="5"></property>
+		<!-- 每次连接增长的个数 -->
+		<property name="acquireIncrement" value="5"></property>
+		<!-- 重试的次数 -->
+		<property name="acquireRetryAttempts" value="3"></property>
+		<!-- 检测空闲连接的间隔时间 -->
+		<property name="idleConnectionTestPeriod" value="60"></property>
+	</bean>
+
+	<!-- 配置SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 设置使用的数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<!-- 配置 hibernate 的实体映射文件 -->
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/wood/pojo/*/*.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置事物管理 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<!-- 配置事物所需要管理的sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置事物的具体处理方式 (事物的增强处理)-->
+	<tx:advice id="tx" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="search*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="select*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+			
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="reg*" propagation="REQUIRED"/>
+			
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="modify*" propagation="REQUIRED"/>
+			
+			<tx:method name="del*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 使用AOP实现事物的拦截 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.wood.service.*.*(*) )" id="txPoint"/>
+		<aop:advisor advice-ref="tx" pointcut-ref="txPoint"/>
+	</aop:config>
+
+	
+	
+</beans>

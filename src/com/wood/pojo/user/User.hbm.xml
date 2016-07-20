@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-5-3 21:56:08 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.wood.pojo.user.User" table="USER">
+        <id name="userID" type="java.lang.Integer">
+            <column name="USERID" />
+            <generator class="increment" />
+        </id>
+        <property name="userName" type="java.lang.String">
+            <column name="USERNAME" />
+        </property>
+        <property name="userPass" type="java.lang.String">
+            <column name="USERPASS" />
+        </property>
+        <property name="userScore" type="java.lang.Integer">
+            <column name="USERSCORE" />
+        </property>
+        <property name="userLvl" type="java.lang.String">
+            <column name="USERLVL" />
+        </property>
+        <property name="userEmail" type="java.lang.String">
+            <column name="USEREMAIL" />
+        </property>
+        <property name="userReputation" type="java.lang.String">
+            <column name="USERREPUTATION" />
+        </property>
+        <property name="userNickname" type="java.lang.String">
+            <column name="USERNICKNAME" />
+        </property>
+        <property name="userDefaultPayType" type="java.lang.String">
+            <column name="USERDEFAULTPAYTYPE" />
+        </property>
+        <property name="userSex" type="java.lang.String">
+            <column name="USERSEX" />
+        </property>
+        <property name="userAvatar" type="java.lang.String">
+            <column name="USERAVATAR" />
+        </property>
+        <property name="userPhone" type="java.lang.String">
+            <column name="USERPHONE" />
+        </property>
+        <property name="userStatus" type="java.lang.Integer">
+            <column name="USERSTATUS" />
+        </property>
+        <property name="userCardID" type="java.lang.String">
+            <column name="USERCARDID" />
+        </property>
+    </class>
+</hibernate-mapping>
